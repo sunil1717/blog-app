@@ -95,8 +95,8 @@ export default function AdminPage() {
         <button
           onClick={() => setActiveTab("blogs")}
           className={`px-4 py-2 rounded ${activeTab === "blogs"
-              ? "bg-green-600 text-white"
-              : "bg-gray-200 hover:bg-gray-300"
+            ? "bg-green-600 text-white"
+            : "bg-gray-200 hover:bg-gray-300"
             }`}
         >
           Blogs
@@ -104,8 +104,8 @@ export default function AdminPage() {
         <button
           onClick={() => setActiveTab("trending")}
           className={`px-4 py-2 rounded ${activeTab === "trending"
-              ? "bg-green-600 text-white"
-              : "bg-gray-200 hover:bg-gray-300"
+            ? "bg-green-600 text-white"
+            : "bg-gray-200 hover:bg-gray-300"
             }`}
         >
           Trending
@@ -174,13 +174,15 @@ export default function AdminPage() {
                   onChange={(e) => handleImageChange(index, e.target.files[0])}
                   className="w-full"
                 />
-                {img && (
+
+                {typeof window !== "undefined" && img && (
                   <img
                     src={URL.createObjectURL(img)}
                     alt={`preview-${index}`}
                     className="mt-2 w-32 h-32 object-cover rounded border"
                   />
                 )}
+
               </div>
             ))}
 
@@ -243,7 +245,7 @@ export default function AdminPage() {
             />
 
 
-            {trendingImage && (
+            {typeof window !== "undefined" && trendingImage && (
               <img
                 src={URL.createObjectURL(trendingImage)}
                 alt="trending-preview"
@@ -267,7 +269,7 @@ export default function AdminPage() {
           {/* Trending List */}
           <h2 className="text-xl font-semibold mb-4">📌 All Trending Items</h2>
           <div className="space-y-4">
-             {trending.map((item) => (
+            {trending.map((item) => (
               <div
                 key={item._id}
                 className="p-4 bg-white shadow rounded flex justify-between items-center"
