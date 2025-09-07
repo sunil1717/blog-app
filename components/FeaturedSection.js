@@ -6,9 +6,11 @@ import Link from "next/link";
 export default function FeaturedSection({ blogs }) {
   if (!blogs) return null;
   
-  console.log(blogs);
   
-  const [main, ...side] = blogs; // main image + 4 small ones
+   const randomBlogs = [...blogs]
+        .sort(() => 0.5 - Math.random())
+        .slice(0, 5);
+  const [main, ...side] = randomBlogs; // main image + 4 small ones
 
   return (
     <section className="bg-[#eef4f7] py-12">

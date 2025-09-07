@@ -11,17 +11,34 @@ export default function PopularSection() {
     fetchTags();
   }, [fetchCategories, fetchTags]);
 
+  // Shuffle and take 50 items
+  const randomCategories = [...categories]
+    .sort(() => 0.5 - Math.random())
+    .slice(0, 50);
+
+  const randomTags = [...tags]
+    .sort(() => 0.5 - Math.random())
+    .slice(0, 50);
+
+  // ✅ Slugify helper
+  const slugify = (str) =>
+    str
+      
+      .trim()
+      .replace(/\s+/g, "-") // spaces -> dashes
+      .replace(/[^\w-]+/g, ""); // remove special chars
+
   return (
     <div className="mt-10 space-y-10">
       {/* Popular Categories */}
       <section>
         <h2 className="text-xl font-semibold mb-4">Popular Categories</h2>
-        <div className="flex flex-row flex-wrap gap-3">
-          {categories.length > 0 ? (
-            categories.map((cat) => (
+        <div className="flex flex-wrap gap-2">
+          {randomCategories.length > 0 ? (
+            randomCategories.map((cat) => (
               <Link
                 key={cat}
-                href={`/blog/category/${encodeURIComponent(cat)}`}
+                href={`/blog/category/${slugify(cat)}`}
                 className="px-4 py-2 bg-gray-100 rounded-full text-sm text-gray-700 hover:bg-blue-500 hover:text-white transition"
               >
                 {cat}
@@ -36,12 +53,12 @@ export default function PopularSection() {
       {/* Popular Tags */}
       <section>
         <h2 className="text-xl font-semibold mb-4">Popular Tags</h2>
-        <div className="flex flex-row flex-wrap gap-2">
-          {tags.length > 0 ? (
-            tags.map((tag) => (
+        <div className="flex flex-wrap gap-2">
+          {randomTags.length > 0 ? (
+            randomTags.map((tag) => (
               <Link
                 key={tag}
-                href={`/blog/tag/${encodeURIComponent(tag)}`}
+                href={`/blog/tag/${slugify(tag)}`}
                 className="px-3 py-1 bg-gray-200 rounded-full text-sm text-gray-700 hover:bg-blue-500 hover:text-white transition"
               >
                 #{tag}

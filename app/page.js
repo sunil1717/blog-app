@@ -34,10 +34,11 @@ export default function HomePage() {
   return (
     <main>
       <Navbar />
-      <FeaturedSection blogs={blogs} />
+      <FeaturedSection blogs={blogs}  />
       <TrendingTopics />
-      <TopStories />
-
+      <TopStories sectionId="top-stories-1" />
+      <FeaturedSection blogs={blogs} />
+      <TopStories sectionId="top-stories-2" />
 
     <Footer/>
     </main>

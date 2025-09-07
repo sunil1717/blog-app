@@ -24,6 +24,12 @@ export default function SingleBlogPage() {
 
   const { singleblog, fetchSingleBlogs, loading, error, recentBlogs, relatedBlogs, fetchRecentBlogs, fetchRelatedBlogs } = useBlogStore();
 
+
+
+  const slugify = (str) =>
+    str?.trim().replace(/\s+/g, "-");
+
+
   useEffect(() => {
     if (!slug) return;
 
@@ -44,7 +50,7 @@ export default function SingleBlogPage() {
 
   return (
     <>
-     
+
 
       <Navbar />
       <section className="bg-[#f8f9fb] py-12">
@@ -54,7 +60,7 @@ export default function SingleBlogPage() {
             {/* Breadcrumb */}
             <div className="text-sm text-gray-500">
               <Link href="/">Home</Link> &bull;{" "}
-              <Link href={`/blog/category/${singleblog.category}`}>{singleblog.category}</Link>{" "}
+              <Link href={`/blog/category/${slugify(singleblog.category)}`}>{singleblog.category}</Link>{" "}
               &bull; <span>{singleblog.title}</span>
             </div>
 
@@ -110,7 +116,7 @@ export default function SingleBlogPage() {
                 type="text"
                 placeholder="Search..."
                 onKeyDown={(e) => {
-                  if (e.key === "Enter") router.push(`/blog/category/${e.target.value}`);
+                  if (e.key === "Enter") router.push(`/blog/category/${slugify(e.target.value)}`);
                 }}
                 className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#e65a64]"
               />
@@ -156,7 +162,7 @@ export default function SingleBlogPage() {
 
             {/*Categories and tags  */}
 
-            <aside className="w-full md:w-1/3 p-4">
+            <aside className="p-4">
               <PopularSection />
             </aside>
 
@@ -177,8 +183,8 @@ export default function SingleBlogPage() {
           <h2 className="text-2xl font-semibold mb-4">Related Posts</h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-            {relatedBlogs &&
-              relatedBlogs.slice(0, 4).map((post) => (
+            {relatedBlogs && relatedBlogs.length > 0 ?
+              (relatedBlogs.slice(0, 4).map((post) => (
                 <Link
                   key={post._id}
                   href={`/blog/${post.slug}`}
@@ -203,7 +209,9 @@ export default function SingleBlogPage() {
                     </span>
                   </h4>
                 </Link>
-              ))}
+              ))) : (
+                <p className="text-gray-500 text-sm">No related blogs available</p>
+              )}
           </div>
         </div>
 
@@ -214,6 +222,6 @@ export default function SingleBlogPage() {
 
 
       </section>
-      <Footer/>
+      <Footer />
     </>);
 }

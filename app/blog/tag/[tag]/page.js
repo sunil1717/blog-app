@@ -16,15 +16,32 @@ export default function CategoryPage() {
     const { tagBlogs, fetchTagBlogs, recentBlogs, fetchRecentBlogs } = useBlogStore();
     const [loading, setLoading] = useState(true);
 
+    const slugify = (str) =>
+        str?.trim().replace(/\s+/g, "-");
+
+
+    const deslugify = (str) =>
+        str
+            .replace(/-/g, " ")
+            .replace(/\s+/g, " ")
+            .trim();
+
+
     useEffect(() => {
         if (!tag) return;
         const fetchData = async () => {
-            await fetchTagBlogs(tag);
+            const actualtag = deslugify(tag)
+
+            await fetchTagBlogs(actualtag);
             await fetchRecentBlogs();
             setLoading(false);
         };
         fetchData();
     }, [tag]);
+
+
+
+    const actualtag = deslugify(tag)
 
     if (loading) return <p className="text-center mt-10">Loading...</p>;
     if (!tagBlogs || tagBlogs.length === 0) return <p className="text-center mt-10">No blogs found</p>;
@@ -39,12 +56,12 @@ export default function CategoryPage() {
                     {/* Breadcrumb */}
                     <div className="text-sm text-gray-600 mb-2">
                         <Link href="/" className="hover:underline">Home</Link> &nbsp;›&nbsp;
-                        <span className="font-medium capitalize">{tag}</span>
+                        <span className="font-medium capitalize">{actualtag}</span>
                     </div>
 
                     {/* Category Heading */}
                     <h1 className="text-3xl font-bold text-gray-900">
-                        Tag: <span className="capitalize">{tag}</span>
+                        Tag: <span className="capitalize">{actualtag}</span>
                     </h1>
                 </div>
             </div>
@@ -116,7 +133,7 @@ export default function CategoryPage() {
                                 type="text"
                                 placeholder="Search tag ..."
                                 onKeyDown={(e) => {
-                                    if (e.key === "Enter") router.push(`/blog/tag/${e.target.value}`);
+                                    if (e.key === "Enter") router.push(`/blog/tag/${slugify(e.target.value)}`);
                                 }}
                                 className="w-full border rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
                             />
@@ -160,7 +177,7 @@ export default function CategoryPage() {
 
                         {/*Categories and tags  */}
 
-                        <aside className="w-full md:w-1/3 p-4">
+                        <aside className=" p-4">
                             <PopularSection />
                         </aside>
 
@@ -168,7 +185,7 @@ export default function CategoryPage() {
 
                 </div>
             </section>
-            <Footer/>
+            <Footer />
         </>
     );
 }

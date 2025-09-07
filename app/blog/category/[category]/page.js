@@ -16,15 +16,33 @@ export default function CategoryPage() {
     const { categoryBlogs, fetchCategoryBlogs, recentBlogs, fetchRecentBlogs } = useBlogStore();
     const [loading, setLoading] = useState(true);
 
+
+
+    const slugify = (str) =>
+        str?.trim().replace(/\s+/g, "-");
+
+    const deslugify = (str) =>
+        str
+            .replace(/-/g, " ")
+            .replace(/\s+/g, " ")
+            .trim();
+
+
     useEffect(() => {
         if (!category) return;
         const fetchData = async () => {
-            await fetchCategoryBlogs(category);
+            const actualCategory = deslugify(category);
+            await fetchCategoryBlogs(actualCategory);
             await fetchRecentBlogs();
             setLoading(false);
         };
         fetchData();
     }, [category]);
+
+
+
+    const actualCategory = deslugify(category);
+
 
     if (loading) return <p className="text-center mt-10">Loading...</p>;
     if (!categoryBlogs || categoryBlogs.length === 0) return <p className="text-center mt-10">No blogs found</p>;
@@ -39,12 +57,12 @@ export default function CategoryPage() {
                     {/* Breadcrumb */}
                     <div className="text-sm text-gray-600 mb-2">
                         <Link href="/" className="hover:underline">Home</Link> &nbsp;›&nbsp;
-                        <span className="font-medium capitalize">{category}</span>
+                        <span className="font-medium capitalize">{actualCategory}</span>
                     </div>
 
                     {/* Category Heading */}
                     <h1 className="text-3xl font-bold text-gray-900">
-                        Category: <span className="capitalize">{category}</span>
+                        Category: <span className="capitalize">{actualCategory}</span>
                     </h1>
                 </div>
             </div>
@@ -116,7 +134,7 @@ export default function CategoryPage() {
                                 type="text"
                                 placeholder="Search Category ..."
                                 onKeyDown={(e) => {
-                                    if (e.key === "Enter") router.push(`/blog/category/${e.target.value}`);
+                                    if (e.key === "Enter") router.push(`/blog/category/${slugify(e.target.value)}`);
                                 }}
                                 className="w-full border rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
                             />
@@ -158,7 +176,7 @@ export default function CategoryPage() {
                         </div>
                         {/*Categories and tags  */}
 
-                        <aside className="w-full md:w-1/3 p-4">
+                        <aside className=" p-4">
                             <PopularSection />
                         </aside>
 
@@ -166,7 +184,7 @@ export default function CategoryPage() {
 
                 </div>
             </section>
-            <Footer/>
+            <Footer />
         </>
     );
 }

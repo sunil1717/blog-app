@@ -64,6 +64,7 @@ export const useBlogStore = create((set, get) => ({
 
     const res = await axios.get(url);
     set({ recentBlogs: res.data, loading: false });
+    return res.data;
   } catch (err) {
     set({ error: err.message, loading: false });
   }
@@ -96,6 +97,7 @@ export const useBlogStore = create((set, get) => ({
     try {
       const res = await axios.get(`${API_URL}?category=${category}`);
       set({ categoryBlogs: res.data, loading: false });
+      return res.data;
     } catch (err) {
       set({ error: err.message, loading: false });
     }
