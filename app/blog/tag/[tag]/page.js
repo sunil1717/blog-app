@@ -7,9 +7,11 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import PopularSection from "@/components/PopularSection";
 import Footer from "@/components/Footer";
+import { useRouter } from "next/navigation";
 
 
 export default function CategoryPage() {
+    const router = useRouter();
     const { tag } = useParams();
     const { tagBlogs, fetchTagBlogs, recentBlogs, fetchRecentBlogs } = useBlogStore();
     const [loading, setLoading] = useState(true);
@@ -114,7 +116,7 @@ export default function CategoryPage() {
                                 type="text"
                                 placeholder="Search tag ..."
                                 onKeyDown={(e) => {
-                                    if (e.key === "Enter") window.location.href = `/blog/tag/${e.target.value}`;
+                                    if (e.key === "Enter") router.push(`/blog/tag/${e.target.value}`);
                                 }}
                                 className="w-full border rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
                             />

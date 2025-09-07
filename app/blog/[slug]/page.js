@@ -7,6 +7,8 @@ import { useBlogStore } from "@/store/useBlogStore";
 import Navbar from "@/components/Navbar";
 import PopularSection from "@/components/PopularSection";
 import Footer from "@/components/Footer";
+import { useRouter } from "next/navigation";
+
 
 
 
@@ -14,6 +16,8 @@ import Footer from "@/components/Footer";
 
 
 export default function SingleBlogPage() {
+  const router = useRouter();
+
   const { slug } = useParams(); //  get slug in App Router
 
 
@@ -106,7 +110,7 @@ export default function SingleBlogPage() {
                 type="text"
                 placeholder="Search..."
                 onKeyDown={(e) => {
-                  if (e.key === "Enter") window.location.href = `/blog/category/${e.target.value}`;
+                  if (e.key === "Enter") router.push(`/blog/category/${e.target.value}`);
                 }}
                 className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#e65a64]"
               />
