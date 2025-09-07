@@ -2,7 +2,9 @@
 import { useState, useEffect } from "react";
 import { useBlogStore } from "@/store/useBlogStore";
 import { useTrendingStore } from "@/store/useTrendingStore";
-import RichTextEditor from "@/components/RichTextEditor";
+import dynamic from "next/dynamic";
+
+const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), { ssr: false });
 
 export default function AdminPage() {
   const { blogs, fetchBlogs, addBlog, deleteBlog, loading, error } = useBlogStore();
@@ -32,6 +34,8 @@ export default function AdminPage() {
   const [trendingTitle, setTrendingTitle] = useState("");
   const [trendingImage, setTrendingImage] = useState(null);
 
+  const [previews, setPreviews] = useState([null, null, null]);
+
 
   useEffect(() => {
     fetchBlogs();
@@ -43,7 +47,19 @@ export default function AdminPage() {
     const newImages = [...images];
     newImages[index] = file;
     setImages(newImages);
+
+    if (file && typeof window !== "undefined") {
+      // Revoke previous preview if exists
+      if (previews[index]) URL.revokeObjectURL(previews[index]);
+
+      const newPreviews = [...previews];
+      newPreviews[index] = URL.createObjectURL(file);
+      setPreviews(newPreviews);
+    }
   };
+
+
+
 
   // Submit Blog
   const handleSubmitBlog = async (e) => {
@@ -59,7 +75,8 @@ export default function AdminPage() {
       if (img) formData.append("images", img);
     });
     await addBlog(formData);
-
+    
+    previews.forEach(url => url && URL.revokeObjectURL(url)); 
     setTitle("");
     setMetaTitle("");
     setContent("");
@@ -67,7 +84,22 @@ export default function AdminPage() {
     setTags("");
     setCategory("");
     setImages([null, null, null]);
+    setPreviews([null, null, null]);
   };
+
+
+
+
+  const [trendingPreview, setTrendingPreview] = useState(null);
+
+  // on file change
+  const handleTrendingImageChange = (file) => {
+    if (trendingPreview) URL.revokeObjectURL(trendingPreview);
+    setTrendingImage(file);
+    setTrendingPreview(file ? URL.createObjectURL(file) : null);
+  };
+
+
 
   // Submit Trending
   const handleSubmitTrending = async (e) => {
@@ -79,12 +111,14 @@ export default function AdminPage() {
     formData.append("image", trendingImage);
 
     await addTrending(formData);
-
+    
+    if (trendingPreview) URL.revokeObjectURL(trendingPreview);
     setTrendingTitle("");
     setTrendingImage(null);
+    setTrendingPreview(null);
   };
 
-  if (!blogs) return;
+ if (loading || !blogs) return <p className="text-center mt-10">Loading ...</p>;
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
@@ -171,13 +205,13 @@ export default function AdminPage() {
               <div key={index} className="mb-2">
                 <input
                   type="file"
-                  onChange={(e) => handleImageChange(index, e.target.files[0])}
+                  onChange={(e) => e.target.files[0] && handleImageChange(index, e.target.files[0])}
                   className="w-full"
                 />
 
-                {typeof window !== "undefined" && img && (
+                {previews[index] && (
                   <img
-                    src={URL.createObjectURL(img)}
+                    src={previews[index]}
                     alt={`preview-${index}`}
                     className="mt-2 w-32 h-32 object-cover rounded border"
                   />
@@ -239,19 +273,20 @@ export default function AdminPage() {
 
             <input
               type="file"
-              onChange={(e) => setTrendingImage(e.target.files[0])}
+              onChange={(e) =>  e.target.files[0] && handleTrendingImageChange(e.target.files[0])}
               className="w-full"
               required
             />
 
 
-            {typeof window !== "undefined" && trendingImage && (
+            {trendingPreview && (
               <img
-                src={URL.createObjectURL(trendingImage)}
+                src={trendingPreview}
                 alt="trending-preview"
                 className="mt-2 w-32 h-32 object-cover rounded border"
               />
             )}
+
 
             <button
               type="submit"
