@@ -1,11 +1,34 @@
 "use client";
 import Link from "next/link";
+import { useEffect,useState } from "react";
+import { useBlogStore } from "@/store/useBlogStore";
 
 export default function Footer() {
+  const { fetchCategories } = useBlogStore();
+
+
+  const [categories, setcategories] = useState([])
+
+  useEffect(() => {
+    const loadCategories = async () => {
+      const res = await fetchCategories();
+      setcategories(res || []);
+    };
+    loadCategories();
+  }, [fetchCategories]);
+
+  const footerCategories = Array.isArray(categories) && categories.length > 0
+    ? [...categories].sort(() => 0.5 - Math.random()).slice(0, 15)
+    : [];
+
+  // Slugify helper
+  const slugify = (str) =>
+    str.trim().replace(/\s+/g, "-").replace(/[^\w-]+/g, "");
+
   return (
     <footer className="bg-gray-900 text-gray-300 py-10 mt-12">
       <div className="max-w-[1320px] mx-auto px-6 md:px-12 lg:px-20">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Column 1 */}
           <div>
             <h2 className="text-white text-lg font-semibold mb-4">About Us</h2>
@@ -17,26 +40,25 @@ export default function Footer() {
 
           {/* Column 2 */}
           <div>
-            <h2 className="text-white text-lg font-semibold mb-4">Quick Links</h2>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/" className="hover:text-white transition">
-                  Home
-                </Link>
-              </li>
-              
-              
-             
-            </ul>
-          </div>
-
-          {/* Column 3 */}
-          <div>
-            <h2 className="text-white text-lg font-semibold mb-4">Follow Us</h2>
-            <div className="flex space-x-4">
-              <a href="#" className="hover:text-white transition">Facebook</a>
-              <a href="#" className="hover:text-white transition">Twitter</a>
-              <a href="#" className="hover:text-white transition">Instagram</a>
+            <h2 className="text-white text-lg font-semibold mb-4">
+              Quick Links
+            </h2>
+            <div className="grid grid-cols-3 gap-y-2">
+              {footerCategories.length > 0 ? (
+                footerCategories.map((cat, idx) => (
+                  <Link
+                    key={idx}
+                    href={`/blog/category/${slugify(cat)}`}
+                    className="hover:text-white transition text-sm"
+                  >
+                    {cat}
+                  </Link>
+                ))
+              ) : (
+                <p className="text-gray-500 text-sm col-span-3">
+                  No categories found
+                </p>
+              )}
             </div>
           </div>
         </div>

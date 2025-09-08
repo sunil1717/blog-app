@@ -25,7 +25,7 @@ export default function HomePage() {
      fetchBlogs()
    }, [fetchBlogs])
 
-   console.log(blogs);
+  
    
    
 

@@ -7,10 +7,17 @@ export default function Navbar() {
   const [query, setQuery] = useState("");
   const router = useRouter();
 
+
+  const slugify = (str) =>
+    str?.trim().replace(/\s+/g, "-");
+
   const handleSearch = (e) => {
     e.preventDefault();
-    if (query.trim()) {
-      router.push(`/blog/category/${encodeURIComponent(query.trim())}`);
+
+    const newquery = slugify(query)
+
+    if (newquery) {
+      router.push(`/blog/search?query=${encodeURIComponent(newquery)}`);
     }
   };
 
@@ -30,14 +37,14 @@ export default function Navbar() {
       {/* Right - Search */}
       <form
         onSubmit={handleSearch}
-        className="flex items-center bg-gray-100 rounded-full px-4 py-2 w-64"
+        className="flex items-center bg-gray-100 rounded-full px-4 py-2 w-48 sm:w-64"
       >
         <input
           type="text"
           placeholder="Search..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="bg-transparent outline-none flex-grow text-sm"
+          className="bg-transparent outline-none flex-1 min-w-0 text-sm"
         />
         <button type="submit" className="hover:cursor-pointer ">
           <svg

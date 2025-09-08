@@ -2,8 +2,8 @@
 import { create } from "zustand";
 import axios from "axios";
 
-const API_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api/blog`; 
-const CATEGORY_API_URL=`${process.env.NEXT_PUBLIC_BASE_URL}/api/categories`;
+const API_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api/blog`;
+const CATEGORY_API_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api/categories`;
 const TAG_API_URL = `${process.env.NEXT_PUBLIC_BASE_URL}/api/tags`;
 
 export const useBlogStore = create((set, get) => ({
@@ -25,7 +25,7 @@ export const useBlogStore = create((set, get) => ({
 
     try {
       set({ loading: true, error: null });
-      
+
 
       const url = API_URL;
       const res = await axios.get(url);
@@ -41,7 +41,7 @@ export const useBlogStore = create((set, get) => ({
 
     try {
       set({ loading: true, error: null });
-      
+
 
       const url = slug ? `${API_URL}?slug=${slug}` : API_URL;
       const res = await axios.get(url);
@@ -52,38 +52,38 @@ export const useBlogStore = create((set, get) => ({
     }
   },
 
-    // Fetch recent posts (e.g., latest 5)
- fetchRecentBlogs: async (excludeSlug) => {
-  set({ loading: true, error: null });
-  try {
-    let url = `${API_URL}?recent=true`;
+  // Fetch recent posts (e.g., latest 5)
+  fetchRecentBlogs: async (excludeSlug) => {
+    set({ loading: true, error: null });
+    try {
+      let url = `${API_URL}?recent=true`;
 
-    if (excludeSlug) {
-      url += `&exclude=${excludeSlug}`;
+      if (excludeSlug) {
+        url += `&exclude=${excludeSlug}`;
+      }
+
+      const res = await axios.get(url);
+      set({ recentBlogs: res.data, loading: false });
+      return res.data;
+    } catch (err) {
+      set({ error: err.message, loading: false });
     }
-
-    const res = await axios.get(url);
-    set({ recentBlogs: res.data, loading: false });
-    return res.data;
-  } catch (err) {
-    set({ error: err.message, loading: false });
-  }
-},
+  },
 
 
-    // Fetch related posts by category/tags excluding current blog
+  // Fetch related posts by category/tags excluding current blog
   fetchRelatedBlogs: async (currentBlog) => {
-    set({  error: null });
+    set({ error: null });
 
     try {
-      
+
       const res = await axios.get(
         `${API_URL}?category=${currentBlog.category}`
       );
       // Exclude current blog
       console.log(currentBlog);
-      
-      const related = res.data.filter(b => b._id !==currentBlog._id);
+
+      const related = res.data.filter(b => b._id !== currentBlog._id);
       set({ relatedBlogs: related, loading: false });
     } catch (err) {
       set({ error: err.message, loading: false });
@@ -91,7 +91,7 @@ export const useBlogStore = create((set, get) => ({
   },
 
 
-    // Fetch blogs by category
+  // Fetch blogs by category
   fetchCategoryBlogs: async (category) => {
     set({ loading: true, error: null });
     try {
@@ -103,7 +103,7 @@ export const useBlogStore = create((set, get) => ({
     }
   },
 
-    // Fetch blogs by tag
+  // Fetch blogs by tag
   fetchTagBlogs: async (tag) => {
     set({ loading: true, error: null });
     try {
@@ -115,12 +115,13 @@ export const useBlogStore = create((set, get) => ({
   },
 
 
-   // fetch all unique category and tags
+  // fetch all unique category and tags
 
-    fetchCategories: async () => {
+  fetchCategories: async () => {
     try {
       const res = await axios.get(CATEGORY_API_URL);
       set({ categories: res.data.categories || [] });
+      return res.data.categories;
     } catch (err) {
       set({ error: err.message });
     }
@@ -130,8 +131,21 @@ export const useBlogStore = create((set, get) => ({
     try {
       const res = await axios.get(TAG_API_URL);
       set({ tags: res.data.tags || [] });
+      return res.data.tags;
     } catch (err) {
       set({ error: err.message });
+    }
+  },
+
+
+  searchBlogs: async (query) => {
+    set({ loading: true, error: null });
+    try {
+      const res = await axios.get(`${API_URL}/search?query=${encodeURIComponent(query)}`);
+
+      return res.data;
+    } catch (err) {
+      set({ error: err.response?.data || err.message, loading: false });
     }
   },
 

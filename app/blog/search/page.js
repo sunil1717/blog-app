@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useBlogStore } from "@/store/useBlogStore";
 import Link from "next/link";
@@ -11,11 +11,25 @@ import { useRouter } from "next/navigation";
 import CategoryGrid from "@/components/CategoryGrid";
 
 
-export default function CategoryPage() {
+export default function SearchPage() {
     const router = useRouter();
-    const { category } = useParams();
-    const { categoryBlogs, fetchCategoryBlogs, recentBlogs, fetchRecentBlogs } = useBlogStore();
+
+
+    const searchParams = useSearchParams();
+    const query = searchParams.get("query") || "";
+
+
+
+
+
+    
+
+    const { searchBlogs, recentBlogs, fetchRecentBlogs } = useBlogStore();
+
     const [loading, setLoading] = useState(true);
+
+    const [queryBlogs, setqueryBlogs] = useState([]);
+
 
 
 
@@ -30,40 +44,42 @@ export default function CategoryPage() {
 
 
     useEffect(() => {
-        if (!category) return;
+        if (!query) return;
+
         const fetchData = async () => {
-            const actualCategory = deslugify(category);
-            await fetchCategoryBlogs(actualCategory);
+            const actualquery = deslugify(query);
+            const res = await searchBlogs(actualquery);
+            setqueryBlogs(res);
             await fetchRecentBlogs();
             setLoading(false);
         };
         fetchData();
-    }, [category]);
+    }, [query]);
 
 
 
-    const actualCategory = deslugify(category);
+    const actualquery = deslugify(query);
 
 
     if (loading) return <p className="text-center mt-10">Loading...</p>;
-    if (!categoryBlogs || categoryBlogs.length === 0) return <p className="text-center mt-10">No blogs found</p>;
+    if (!queryBlogs || queryBlogs.length === 0) return <p className="text-center mt-10">No blogs found</p>;
 
     return (
         <>
             <Navbar />
 
-            {/* Breadcrumb with Category Heading */}
+            {/* Breadcrumb with query Heading */}
             <div className="bg-gray-100 py-6">
                 <div className="max-w-[1320px] mx-auto px-6 md:px-12 lg:px-20">
                     {/* Breadcrumb */}
                     <div className="text-sm text-gray-600 mb-2">
                         <Link href="/" className="hover:underline">Home</Link> &nbsp;›&nbsp;
-                        <span className="font-medium capitalize">{actualCategory}</span>
+                        <span className="font-medium capitalize">{actualquery}</span>
                     </div>
 
                     {/* Category Heading */}
                     <h1 className="text-3xl font-bold text-gray-900">
-                        Category: <span className="capitalize">{actualCategory}</span>
+                        Searched: <span className="capitalize">{actualquery}</span>
                     </h1>
                 </div>
             </div>
@@ -75,7 +91,7 @@ export default function CategoryPage() {
                     {/* LEFT: Blog List */}
                     <div className="lg:col-span-8 space-y-6">
                         <div className="grid grid-cols-1 gap-8">
-                            {categoryBlogs.map((b) => (
+                            {queryBlogs.map((b) => (
                                 <Link
                                     key={b.slug}
                                     href={`/blog/${b.slug}`}
@@ -133,9 +149,14 @@ export default function CategoryPage() {
                             <h3 className="font-semibold mb-3">Search</h3>
                             <input
                                 type="text"
-                                placeholder="Search Category ..."
+                                placeholder="Search  ..."
                                 onKeyDown={(e) => {
-                                    if (e.key === "Enter") router.push(`/blog/category/${slugify(e.target.value)}`);
+                                    if (e.key === "Enter") {
+                                        const query = slugify(e.target.value);
+                                        if (query) {
+                                            router.push(`/blog/search?query=${encodeURIComponent(query)}`);
+                                        }
+                                    }
                                 }}
                                 className="w-full border rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
                             />
@@ -183,10 +204,7 @@ export default function CategoryPage() {
 
                     </div>
 
-
-
                 </div>
-
                 <CategoryGrid/>
             </section>
             <Footer />
