@@ -44,7 +44,11 @@ export default function CategoryPage() {
 
     const actualtag = deslugify(tag)
 
-    if (loading) return <p className="text-center mt-10">Loading...</p>;
+    if (loading) return (
+        <div className="flex items-center justify-center min-h-screen bg-gray-200">
+            <div className="w-16 h-16 border-t-4 border-red-500 border-solid rounded-full animate-spin border-opacity-70"></div>
+        </div>
+    );
     if (!tagBlogs || tagBlogs.length === 0) return <p className="text-center mt-10">No blogs found</p>;
 
     return (
@@ -185,7 +189,7 @@ export default function CategoryPage() {
                     </div>
 
                 </div>
-                <CategoryGrid/>
+                <CategoryGrid />
             </section>
             <Footer />
         </>

@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 import CategoryGrid from "@/components/CategoryGrid";
 
 
- function SearchPageContent() {
+function SearchPageContent() {
     const router = useRouter();
 
 
@@ -25,7 +25,7 @@ import CategoryGrid from "@/components/CategoryGrid";
 
 
 
-    
+
 
     const { searchBlogs, recentBlogs, fetchRecentBlogs } = useBlogStore();
 
@@ -64,7 +64,11 @@ import CategoryGrid from "@/components/CategoryGrid";
     const actualquery = deslugify(query);
 
 
-    if (loading) return <p className="text-center mt-10">Loading...</p>;
+    if (loading) return (
+        <div className="flex items-center justify-center min-h-screen bg-gray-200">
+            <div className="w-16 h-16 border-t-4 border-red-500 border-solid rounded-full animate-spin border-opacity-70"></div>
+        </div>
+    );
     if (!queryBlogs || queryBlogs.length === 0) return <p className="text-center mt-10">No blogs found</p>;
 
     return (
@@ -208,7 +212,7 @@ import CategoryGrid from "@/components/CategoryGrid";
                     </div>
 
                 </div>
-                <CategoryGrid/>
+                <CategoryGrid />
             </section>
             <Footer />
         </>
@@ -217,9 +221,9 @@ import CategoryGrid from "@/components/CategoryGrid";
 
 
 export default function SearchPage() {
-  return (
-    <Suspense fallback={<p className="text-center mt-10">Loading...</p>}>
-      <SearchPageContent />
-    </Suspense>
-  );
+    return (
+        <Suspense fallback={<p className="text-center mt-10">Loading...</p>}>
+            <SearchPageContent />
+        </Suspense>
+    );
 }

@@ -10,6 +10,10 @@ import Link from "next/link";
 export default function TrendingTopics() {
   const { trending, fetchTrending, loading, error } = useTrendingStore();
 
+
+  const slugify = (str) =>
+    str?.trim().replace(/\s+/g, "-");
+
   // Fetch trending items from backend
   useEffect(() => {
     fetchTrending();
@@ -64,7 +68,7 @@ export default function TrendingTopics() {
           >
             {trending.map((topic) => (
               <SwiperSlide key={topic._id}>
-                <Link href={`/blog/category/${encodeURIComponent(topic.title)}`}>
+                <Link href={`/blog/category/${encodeURIComponent(slugify(topic.title))}`}>
                   <div className="relative rounded-[12px] overflow-hidden cursor-pointer group">
                     {/* Image */}
                     <img

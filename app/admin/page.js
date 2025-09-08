@@ -75,8 +75,8 @@ export default function AdminPage() {
       if (img) formData.append("images", img);
     });
     await addBlog(formData);
-    
-    previews.forEach(url => url && URL.revokeObjectURL(url)); 
+
+    previews.forEach(url => url && URL.revokeObjectURL(url));
     setTitle("");
     setMetaTitle("");
     setContent("");
@@ -111,14 +111,21 @@ export default function AdminPage() {
     formData.append("image", trendingImage);
 
     await addTrending(formData);
-    
+
     if (trendingPreview) URL.revokeObjectURL(trendingPreview);
     setTrendingTitle("");
     setTrendingImage(null);
     setTrendingPreview(null);
   };
 
- if (loading || !blogs) return <p className="text-center mt-10">Loading ...</p>;
+  if (loading) return (
+    <div className="flex items-center justify-center min-h-screen bg-gray-200">
+      <div className="w-16 h-16 border-t-4 border-red-500 border-solid rounded-full animate-spin border-opacity-70"></div>
+    </div>
+  );
+
+  if (!blogs) return <p className="text-center mt-10">No Blogs Found</p>;
+
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
@@ -273,7 +280,7 @@ export default function AdminPage() {
 
             <input
               type="file"
-              onChange={(e) =>  e.target.files[0] && handleTrendingImageChange(e.target.files[0])}
+              onChange={(e) => e.target.files[0] && handleTrendingImageChange(e.target.files[0])}
               className="w-full"
               required
             />

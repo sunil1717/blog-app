@@ -14,11 +14,28 @@ import Footer from "@/components/Footer";
 
 
 
+
+
+function Loader() {
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gray-200">
+      <div className="w-16 h-16 border-t-4 border-red-500 border-solid rounded-full animate-spin border-opacity-70"></div>
+    </div>
+  );
+}
+
+
+
 export default function HomePage() {
 
   const { blogs, fetchBlogs, fetchRecentBlogs, recentBlogs } = useBlogStore();
 
-   
+   const [loading, setLoading] = useState(true);
+
+
+
+
+
 
 
   useEffect(() => {
@@ -26,7 +43,15 @@ export default function HomePage() {
    }, [fetchBlogs])
 
   
-   
+   useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2000); 
+    return () => clearTimeout(timer);
+  }, []);
+  
+
+  if (loading) {
+    return <Loader />;
+  }
    
 
   
