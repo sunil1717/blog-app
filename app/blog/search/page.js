@@ -1,4 +1,7 @@
+
 "use client";
+
+import { Suspense } from "react";
 
 import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -11,7 +14,7 @@ import { useRouter } from "next/navigation";
 import CategoryGrid from "@/components/CategoryGrid";
 
 
-export default function SearchPage() {
+ function SearchPageContent() {
     const router = useRouter();
 
 
@@ -210,4 +213,13 @@ export default function SearchPage() {
             <Footer />
         </>
     );
+}
+
+
+export default function SearchPage() {
+  return (
+    <Suspense fallback={<p className="text-center mt-10">Loading...</p>}>
+      <SearchPageContent />
+    </Suspense>
+  );
 }
