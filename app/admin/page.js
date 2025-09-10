@@ -3,10 +3,27 @@ import { useState, useEffect } from "react";
 import { useBlogStore } from "@/store/useBlogStore";
 import { useTrendingStore } from "@/store/useTrendingStore";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 
 const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), { ssr: false });
 
 export default function AdminPage() {
+
+  const router = useRouter();
+  const [authChecked, setAuthChecked] = useState(false);
+
+
+
+  useEffect(() => {
+    const isAdmin = localStorage.getItem("isAdmin");
+    if (!isAdmin) {
+      router.push("/admin/login");
+    } else {
+      setAuthChecked(true);
+    }
+  }, [router]);
+
+
   const { blogs, fetchBlogs, addBlog, deleteBlog, loading, error } = useBlogStore();
 
   const {
@@ -118,6 +135,20 @@ export default function AdminPage() {
     setTrendingPreview(null);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("isAdmin");
+    router.push("/admin/login");
+  };
+
+
+  if (!authChecked) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-200">
+        <div className="w-16 h-16 border-t-4 border-red-500 border-solid rounded-full animate-spin border-opacity-70"></div>
+      </div>
+    );
+  }
+
   if (loading) return (
     <div className="flex items-center justify-center min-h-screen bg-gray-200">
       <div className="w-16 h-16 border-t-4 border-red-500 border-solid rounded-full animate-spin border-opacity-70"></div>
@@ -129,7 +160,15 @@ export default function AdminPage() {
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">🛠 Admin Panel</h1>
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-3xl font-bold"> Admin Panel</h1>
+        <button
+          onClick={handleLogout}
+          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700"
+        >
+          Logout
+        </button>
+      </div>
 
       {/* Tabs */}
       <div className="flex space-x-4 mb-6">
