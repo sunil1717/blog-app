@@ -17,7 +17,7 @@ export async function GET() {
   // Blog URLs
   const blogUrls = blogs.map(
     (b) => `<url>
-      <loc>${baseUrl}/blog/${b.slug}</loc>
+      <loc>${baseUrl}/${b.slug}</loc>
       <lastmod>${b.publishedDate.toISOString()}</lastmod>
     </url>`
   );
@@ -26,7 +26,7 @@ export async function GET() {
   const categories = [...new Set(blogs.map((b) => b.category))];
   const categoryUrls = categories.map(
     (c) => `<url>
-      <loc>${baseUrl}/blog/category/${encodeURIComponent(c)}</loc>
+      <loc>${baseUrl}/category/${encodeURIComponent(c)}</loc>
     </url>`
   );
 
@@ -34,7 +34,7 @@ export async function GET() {
   const tags = [...new Set(blogs.flatMap((b) => b.tags || []))];
   const tagUrls = tags.map(
     (t) => `<url>
-      <loc>${baseUrl}/blog/tag/${encodeURIComponent(t)}</loc>
+      <loc>${baseUrl}/tag/${encodeURIComponent(t)}</loc>
     </url>`
   );
 

@@ -17,7 +17,7 @@ export default function Navbar() {
     const newquery = slugify(query)
 
     if (newquery) {
-      router.push(`/blog/search?query=${encodeURIComponent(newquery)}`);
+      router.push(`/search?query=${encodeURIComponent(newquery)}`);
     }
   };
 

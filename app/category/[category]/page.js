@@ -13,13 +13,14 @@ import CategoryGrid from "@/components/CategoryGrid";
 
 export default function CategoryPage() {
     const router = useRouter();
-    const { tag } = useParams();
-    const { tagBlogs, fetchTagBlogs, recentBlogs, fetchRecentBlogs } = useBlogStore();
+    const { category } = useParams();
+    const { categoryBlogs, fetchCategoryBlogs, recentBlogs, fetchRecentBlogs } = useBlogStore();
     const [loading, setLoading] = useState(true);
+
+
 
     const slugify = (str) =>
         str?.trim().replace(/\s+/g, "-");
-
 
     const deslugify = (str) =>
         str
@@ -29,27 +30,27 @@ export default function CategoryPage() {
 
 
     useEffect(() => {
-        if (!tag) return;
+        if (!category) return;
         const fetchData = async () => {
-            const actualtag = deslugify(tag)
-
-            await fetchTagBlogs(actualtag);
+            const actualCategory = deslugify(category);
+            await fetchCategoryBlogs(actualCategory);
             await fetchRecentBlogs();
             setLoading(false);
         };
         fetchData();
-    }, [tag]);
+    }, [category]);
 
 
 
-    const actualtag = deslugify(tag)
+    const actualCategory = deslugify(category);
+
 
     if (loading) return (
         <div className="flex items-center justify-center min-h-screen bg-gray-200">
             <div className="w-16 h-16 border-t-4 border-red-500 border-solid rounded-full animate-spin border-opacity-70"></div>
         </div>
     );
-    if (!tagBlogs || tagBlogs.length === 0) return <p className="text-center mt-10">No blogs found</p>;
+    if (!categoryBlogs || categoryBlogs.length === 0) return <p className="text-center mt-10">No blogs found</p>;
 
     return (
         <>
@@ -61,12 +62,12 @@ export default function CategoryPage() {
                     {/* Breadcrumb */}
                     <div className="text-sm text-gray-600 mb-2">
                         <Link href="/" className="hover:underline">Home</Link> &nbsp;›&nbsp;
-                        <span className="font-medium capitalize">{actualtag}</span>
+                        <span className="font-medium capitalize">{actualCategory}</span>
                     </div>
 
                     {/* Category Heading */}
                     <h1 className="text-3xl font-bold text-gray-900">
-                        Tag: <span className="capitalize">{actualtag}</span>
+                        Category: <span className="capitalize">{actualCategory}</span>
                     </h1>
                 </div>
             </div>
@@ -78,10 +79,10 @@ export default function CategoryPage() {
                     {/* LEFT: Blog List */}
                     <div className="lg:col-span-8 space-y-6">
                         <div className="grid grid-cols-1 gap-8">
-                            {tagBlogs.map((b) => (
+                            {categoryBlogs.map((b) => (
                                 <Link
                                     key={b.slug}
-                                    href={`/blog/${b.slug}`}
+                                    href={`/${b.slug}`}
                                     className="flex flex-col md:flex-row bg-white rounded-2xl shadow-md hover:shadow-xl overflow-hidden transition group"
                                 >
                                     {/* Image */}
@@ -136,9 +137,9 @@ export default function CategoryPage() {
                             <h3 className="font-semibold mb-3">Search</h3>
                             <input
                                 type="text"
-                                placeholder="Search tag ..."
+                                placeholder="Search Category ..."
                                 onKeyDown={(e) => {
-                                    if (e.key === "Enter") router.push(`/blog/tag/${slugify(e.target.value)}`);
+                                    if (e.key === "Enter") router.push(`/category/${slugify(e.target.value)}`);
                                 }}
                                 className="w-full border rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
                             />
@@ -151,7 +152,7 @@ export default function CategoryPage() {
                                 {recentBlogs?.map((b) => (
                                     <Link
                                         key={b.slug}
-                                        href={`/blog/${b.slug}`}
+                                        href={`/${b.slug}`}
                                         className="flex gap-4 items-center group"
                                     >
                                         {/* Image */}
@@ -178,8 +179,6 @@ export default function CategoryPage() {
                                 ))}
                             </div>
                         </div>
-
-
                         {/*Categories and tags  */}
 
                         <aside className=" p-4">
@@ -188,7 +187,10 @@ export default function CategoryPage() {
 
                     </div>
 
+
+
                 </div>
+
                 <CategoryGrid />
             </section>
             <Footer />

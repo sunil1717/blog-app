@@ -68,7 +68,7 @@ export default function TrendingTopics() {
           >
             {trending.map((topic) => (
               <SwiperSlide key={topic._id}>
-                <Link href={`/blog/category/${encodeURIComponent(slugify(topic.title))}`}>
+                <Link href={`/category/${encodeURIComponent(slugify(topic.title))}`}>
                   <div className="relative rounded-[12px] overflow-hidden cursor-pointer group">
                     {/* Image */}
                     <img

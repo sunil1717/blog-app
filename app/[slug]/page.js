@@ -65,7 +65,7 @@ export default function SingleBlogPage() {
             {/* Breadcrumb */}
             <div className="text-sm text-gray-500">
               <Link href="/">Home</Link> &bull;{" "}
-              <Link href={`/blog/category/${slugify(singleblog.category)}`}>{singleblog.category}</Link>{" "}
+              <Link href={`/category/${slugify(singleblog.category)}`}>{singleblog.category}</Link>{" "}
               &bull; <span>{singleblog.title}</span>
             </div>
 
@@ -121,7 +121,7 @@ export default function SingleBlogPage() {
                 type="text"
                 placeholder="Search..."
                 onKeyDown={(e) => {
-                  if (e.key === "Enter") router.push(`/blog/category/${slugify(e.target.value)}`);
+                  if (e.key === "Enter") router.push(`/category/${slugify(e.target.value)}`);
                 }}
                 className="w-full border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#e65a64]"
               />
@@ -134,7 +134,7 @@ export default function SingleBlogPage() {
                 {recentBlogs?.map((b) => (
                   <Link
                     key={b.slug}
-                    href={`/blog/${b.slug}`}
+                    href={`/${b.slug}`}
                     className="flex gap-3 items-center group"
                   >
                     {/* Thumbnail */}
@@ -192,7 +192,7 @@ export default function SingleBlogPage() {
               (relatedBlogs.slice(0, 4).map((post) => (
                 <Link
                   key={post._id}
-                  href={`/blog/${post.slug}`}
+                  href={`/${post.slug}`}
                   className="group cursor-pointer block"
                 >
                   {/* Image with zoom effect */}

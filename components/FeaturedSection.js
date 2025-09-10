@@ -18,7 +18,7 @@ export default function FeaturedSection({ blogs }) {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           
           {/* LEFT COLUMN: Large Feature */}
-          <Link href={`/blog/${main.slug}`}>
+          <Link href={`/${main.slug}`}>
             <div className="relative rounded-[14px] overflow-hidden h-[630px] group border border-gray-300">
               <img
                 src={main.images[0]}
@@ -39,7 +39,7 @@ export default function FeaturedSection({ blogs }) {
           {/* RIGHT COLUMN: 2x2 Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {side.slice(0, 4).map((b) => (
-              <Link key={b.slug} href={`/blog/${b.slug}`} className="group">
+              <Link key={b.slug} href={`/${b.slug}`} className="group">
                 <div className="rounded-[10px] overflow-hidden">
                   <img
                     src={b.images[0]}

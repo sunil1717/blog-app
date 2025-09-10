@@ -38,7 +38,7 @@ export default function CategoryGrid() {
           limitedCategories.map((cat, idx) => (
             <Link
               key={idx}
-              href={`/blog/category/${slugify(cat)}`}
+              href={`/category/${slugify(cat)}`}
               className="text-gray-700 hover:text-blue-500 text-md"
             >
               {cat.toUpperCase()}

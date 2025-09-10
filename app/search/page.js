@@ -101,7 +101,7 @@ function SearchPageContent() {
                             {queryBlogs.map((b) => (
                                 <Link
                                     key={b.slug}
-                                    href={`/blog/${b.slug}`}
+                                    href={`/${b.slug}`}
                                     className="flex flex-col md:flex-row bg-white rounded-2xl shadow-md hover:shadow-xl overflow-hidden transition group"
                                 >
                                     {/* Image */}
@@ -161,7 +161,7 @@ function SearchPageContent() {
                                     if (e.key === "Enter") {
                                         const query = slugify(e.target.value);
                                         if (query) {
-                                            router.push(`/blog/search?query=${encodeURIComponent(query)}`);
+                                            router.push(`/search?query=${encodeURIComponent(query)}`);
                                         }
                                     }
                                 }}
@@ -176,7 +176,7 @@ function SearchPageContent() {
                                 {recentBlogs?.map((b) => (
                                     <Link
                                         key={b.slug}
-                                        href={`/blog/${b.slug}`}
+                                        href={`/${b.slug}`}
                                         className="flex gap-4 items-center group"
                                     >
                                         {/* Image */}

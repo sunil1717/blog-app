@@ -103,7 +103,7 @@ export default function TopStories({ sectionId }) {
                                 key={story?._id}
                                 className="flex items-start gap-4 border-b pb-4 group cursor-pointer"
                             >
-                                <Link href={`/blog/${story.slug}`} key={story?._id} className="cursor-pointer">
+                                <Link href={`/${story.slug}`} key={story?._id} className="cursor-pointer">
                                     <div className="relative w-[200px] h-[120px] overflow-hidden rounded-md flex-shrink-0">
                                         <img
                                             src={story?.images[0]}
@@ -115,13 +115,13 @@ export default function TopStories({ sectionId }) {
 
                                 <div>
                                     {story.category && (
-                                        <Link href={`/blog/category/${slugify(story.category)}`} className="flip-badge text-xs px-2 py-1 rounded-md cursor-pointer text-red-500 inline-block hover:text-red-600 transition">
+                                        <Link href={`/category/${slugify(story.category)}`} className="flip-badge text-xs px-2 py-1 rounded-md cursor-pointer text-red-500 inline-block hover:text-red-600 transition">
 
                                             <span className="flip-bottom block">{story.category}</span>
                                         </Link>
                                     )}
 
-                                    <Link href={`/blog/${story.slug}`} key={story?._id} className="cursor-pointer">
+                                    <Link href={`/${story.slug}`} key={story?._id} className="cursor-pointer">
                                         <h3 className="font-semibold text-lg relative w-fit">
                                             <span className="bg-gradient-to-r from-red-500 to-red-500 bg-[length:0%_2px] bg-left-bottom bg-no-repeat transition-all duration-500 group-hover:bg-[length:100%_2px] group-hover:text-red-500">
                                                 {story.title}
@@ -139,7 +139,7 @@ export default function TopStories({ sectionId }) {
                         {featured.map((story) => (
                             <div key={story?._id} className="w-full h-full relative">
 
-                                <Link href={`/blog/${story.slug}`} key={story?._id} className="cursor-pointer">
+                                <Link href={`/${story.slug}`} key={story?._id} className="cursor-pointer">
                                     <img
                                         src={story?.images[0]}
                                         alt={story.title}
@@ -148,12 +148,12 @@ export default function TopStories({ sectionId }) {
                                 </Link>
                                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
                                     {story.category && (
-                                        <Link href={`/blog/category/${slugify(story.category)}`} className="flip-badge text-xs px-2 py-1 rounded-md cursor-pointer text-red-600 inline-block hover:text-red-600 transition">
+                                        <Link href={`/category/${slugify(story.category)}`} className="flip-badge text-xs px-2 py-1 rounded-md cursor-pointer text-red-600 inline-block hover:text-red-600 transition">
 
                                             <span className="flip-bottom block">{story.category}</span>
                                         </Link>
                                     )}
-                                    <Link href={`/blog/${story.slug}`} key={story?._id} className="cursor-pointer">
+                                    <Link href={`/${story.slug}`} key={story?._id} className="cursor-pointer">
                                         <h2 className="text-white text-xl font-bold relative w-fit">
                                             <span className="bg-gradient-to-r from-red-400 to-red-400 bg-[length:0%_2px] bg-left-bottom bg-no-repeat transition-all duration-500 group-hover:bg-[length:100%_2px] group-hover:text-red-400">
                                                 {story.title}
