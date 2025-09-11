@@ -31,6 +31,7 @@ export const useBlogStore = create((set, get) => ({
       const res = await axios.get(url);
       const Ares = JSON.parse(JSON.stringify(res));
       set({ blogs: Ares.data, loading: false });
+      return Ares.data;
     } catch (err) {
       set({ error: err.response?.data || err.message, loading: false });
     }

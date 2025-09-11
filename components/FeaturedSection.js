@@ -7,10 +7,8 @@ export default function FeaturedSection({ blogs }) {
   if (!blogs) return null;
   
   
-   const randomBlogs = [...blogs]
-        .sort(() => 0.5 - Math.random())
-        .slice(0, 5);
-  const [main, ...side] = randomBlogs; // main image + 4 small ones
+  
+  const [main, ...side] = blogs; // main image + 4 small ones
 
   return (
     <section className="bg-[#eef4f7] py-12">

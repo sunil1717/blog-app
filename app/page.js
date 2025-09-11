@@ -28,9 +28,11 @@ function Loader() {
 
 export default function HomePage() {
 
-  const { blogs, fetchBlogs, fetchRecentBlogs, recentBlogs } = useBlogStore();
+  const { fetchBlogs, fetchRecentBlogs, recentBlogs } = useBlogStore();
 
-   const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [blogs, setblogs] = useState(null);
+
 
 
 
@@ -39,33 +41,46 @@ export default function HomePage() {
 
 
   useEffect(() => {
-     fetchBlogs()
-   }, [fetchBlogs])
+    const loadBlogs = async () => {
+      const data = await fetchBlogs(); // wait for async fetch
+      setblogs(data);
+    };
+    loadBlogs();
+  }, [fetchBlogs]);
 
-  
-   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 2000); 
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
-  
+
 
   if (loading) {
     return <Loader />;
   }
-   
 
-  
+  const chunkSize = 5;
+  const blogChunks = [];
+  for (let i = 0; i < blogs.length; i += chunkSize) {
+    blogChunks.push(blogs.slice(i, i + chunkSize));
+  }
+
 
   return (
     <main>
       <Navbar />
-      <FeaturedSection blogs={blogs}  />
-      <TrendingTopics />
-      <TopStories sectionId="top-stories-1" />
-      <FeaturedSection blogs={blogs} />
-      <TopStories sectionId="top-stories-2" />
+      {blogChunks.map((chunk, index) => (
+        <div key={index}>
+          <FeaturedSection blogs={chunk} />
 
-    <Footer/>
+          <TopStories sectionId={`top-stories-${index}`} />
+        </div>
+      ))}
+
+      <TrendingTopics />
+
+
+      <Footer />
     </main>
   );
 }
