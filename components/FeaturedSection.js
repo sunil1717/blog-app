@@ -4,7 +4,7 @@
 import Link from "next/link";
 
 export default function FeaturedSection({ blogs }) {
-  if (!blogs) return null;
+  if (!blogs || blogs.length === 0) return null;
   
   
   

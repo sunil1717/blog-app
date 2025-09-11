@@ -7,7 +7,7 @@ import { useBlogStore } from "@/store/useBlogStore";
 
 export default function TopStories({ sectionId }) {
     const {
-        categories,
+
         fetchCategories,
         fetchCategoryBlogs,
         fetchRecentBlogs,
@@ -17,6 +17,8 @@ export default function TopStories({ sectionId }) {
     const [selectedCategory, setSelectedCategory] = useState(null);
     const [stories, setStories] = useState([]);
     const [randomCategories, setRandomCategories] = useState([]);
+    const [categories, setcategories] = useState([]);
+
 
     const slugify = (str) =>
         str
@@ -24,9 +26,15 @@ export default function TopStories({ sectionId }) {
             .trim()
             .replace(/\s+/g, "-"); //
 
-    // Fetch categories on mount
+
+
+
     useEffect(() => {
-        fetchCategories();
+        const loadcategories = async () => {
+            const data = await fetchCategories(); // wait for async fetch
+            setcategories(data);
+        };
+        loadcategories();
     }, [fetchCategories]);
 
     // Fetch blogs when category changes

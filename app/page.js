@@ -31,7 +31,7 @@ export default function HomePage() {
   const { fetchBlogs, fetchRecentBlogs, recentBlogs } = useBlogStore();
 
   const [loading, setLoading] = useState(true);
-  const [blogs, setblogs] = useState(null);
+  const [blogs, setblogs] = useState([]);
 
 
 
@@ -55,7 +55,7 @@ export default function HomePage() {
   }, []);
 
 
-  if (loading) {
+  if (loading || !blogs || blogs.length === 0) {
     return <Loader />;
   }
 
@@ -69,16 +69,18 @@ export default function HomePage() {
   return (
     <main>
       <Navbar />
-      {blogChunks.map((chunk, index) => (
+
+      {blogChunks[0] && <FeaturedSection blogs={blogChunks[0]} />}
+      <TrendingTopics />
+      <TopStories sectionId="top-stories-1" />
+      {blogChunks[1] && <FeaturedSection blogs={blogChunks[1]} />}
+      <TopStories sectionId="top-stories-2" />
+
+      {blogChunks.slice(2).map((chunk, index) => (
         <div key={index}>
           <FeaturedSection blogs={chunk} />
-
-          <TopStories sectionId={`top-stories-${index}`} />
         </div>
       ))}
-
-      <TrendingTopics />
-
 
       <Footer />
     </main>

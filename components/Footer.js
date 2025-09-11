@@ -8,14 +8,18 @@ export default function Footer() {
 
 
   const [categories, setcategories] = useState([])
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     const loadCategories = async () => {
       const res = await fetchCategories();
       setcategories(res || []);
+      setLoading(false);
+
     };
     loadCategories();
-  }, [fetchCategories]);
+  }, []);
 
   const footerCategories = Array.isArray(categories) && categories.length > 0
     ? [...categories].sort(() => 0.5 - Math.random()).slice(0, 15)
@@ -44,7 +48,7 @@ export default function Footer() {
               Quick Links
             </h2>
             <div className="grid grid-cols-3 gap-y-2">
-              {footerCategories.length > 0 ? (
+              {loading ? <p className="text-gray-500 text-sm">Loading...</p> :footerCategories.length > 0 ? (
                 footerCategories.map((cat, idx) => (
                   <Link
                     key={idx}

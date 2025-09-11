@@ -8,11 +8,14 @@ export default function CategoryGrid() {
 
 
   const [categories, setcategories] = useState([])
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     const loadCategories = async () => {
       const res = await fetchCategories();
       setcategories(res || []);
+      setLoading(false);
     };
     loadCategories();
   }, [fetchCategories]);
@@ -34,7 +37,7 @@ export default function CategoryGrid() {
       <h2 className="text-2xl font-semibold mb-6">Most Searched Category</h2>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-y-6 gap-x-10">
-        {limitedCategories.length > 0 ? (
+        {loading ? <p className="text-gray-500 text-sm">Loading...</p> :limitedCategories.length > 0 ? (
           limitedCategories.map((cat, idx) => (
             <Link
               key={idx}
