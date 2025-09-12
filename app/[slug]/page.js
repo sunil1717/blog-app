@@ -100,10 +100,10 @@ export default function SingleBlogPage() {
                       alt={`${singleblog.title} - image ${idx + 1}`}
                       className="w-full h-64 md:h-80 object-cover rounded-lg"
                     />
-
+                     
                     {/* Corresponding content */}
                     <div
-                      className="prose prose-lg max-w-none text-gray-700"
+                      className="prose prose-xl max-w-none text-gray-700"
                       dangerouslySetInnerHTML={{ __html: htmlBlock + "</p>" }}
                     />
                   </div>

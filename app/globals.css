@@ -37,4 +37,20 @@ body {
 .ck-content th, .ck-content td { border: 1px solid #e5e7eb; padding: .4rem .6rem; }
 
 
+@layer base {
+  .prose h1 {
+    @apply text-4xl font-bold text-gray-900;
+  }
 
+  .prose h2 {
+    @apply text-3xl font-semibold text-gray-800 mt-6 mb-4;
+  }
+
+  .prose h3 {
+    @apply text-2xl font-semibold text-gray-700 mt-4 mb-2;
+  }
+
+  .prose p {
+    @apply text-base leading-relaxed text-gray-700;
+  }
+}
