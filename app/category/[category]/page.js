@@ -8,7 +8,7 @@ import Navbar from "@/components/Navbar";
 import PopularSection from "@/components/PopularSection";
 import Footer from "@/components/Footer";
 import { useRouter } from "next/navigation";
-import CategoryGrid from "@/components/CategoryGrid";
+
 
 
 export default function CategoryPage() {
@@ -191,7 +191,6 @@ export default function CategoryPage() {
 
                 </div>
 
-                <CategoryGrid />
             </section>
             <Footer />
         </>

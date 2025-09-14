@@ -26,7 +26,7 @@ export default function Navbar() {
       {/* Left - Logo + Brand */}
       <div className="flex items-center space-x-2">
         <Image
-          src="/logo.jpg" // place your logo inside public/logo.png
+          src="/globe.svg" // place your logo inside public/logo.png
           alt="Logo"
           width={35}
           height={35}

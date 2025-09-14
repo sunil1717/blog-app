@@ -11,7 +11,7 @@ import Navbar from "@/components/Navbar";
 import PopularSection from "@/components/PopularSection";
 import Footer from "@/components/Footer";
 import { useRouter } from "next/navigation";
-import CategoryGrid from "@/components/CategoryGrid";
+
 
 
 function SearchPageContent() {
@@ -212,7 +212,7 @@ function SearchPageContent() {
                     </div>
 
                 </div>
-                <CategoryGrid />
+                
             </section>
             <Footer />
         </>
