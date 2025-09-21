@@ -26,7 +26,7 @@ export async function GET() {
   const categories = [...new Set(blogs.map((b) => b.category))];
   const categoryUrls = categories.map(
     (c) => `<url>
-      <loc>${baseUrl}/category/${encodeURIComponent(c)}</loc>
+      <loc>${baseUrl}/category/${c.trim().replace(/\s+/g, "-")}</loc>
     </url>`
   );
 
@@ -34,7 +34,7 @@ export async function GET() {
   const tags = [...new Set(blogs.flatMap((b) => b.tags || []))];
   const tagUrls = tags.map(
     (t) => `<url>
-      <loc>${baseUrl}/tag/${encodeURIComponent(t)}</loc>
+      <loc>${baseUrl}/tag/${t.trim().replace(/\s+/g, "-")}</loc>
     </url>`
   );
 
