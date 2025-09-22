@@ -50,10 +50,10 @@ export default function TagClient({ tagSlug }) {
             <Link href="/" className="hover:underline">
               Home
             </Link>{" "}
-            › <span className="font-medium capitalize">{actualTag}</span>
+            › <span className="font-medium capitalize">{actualTag.replace(/-/g, " ")}</span>
           </div>
           <h1 className="text-3xl font-bold text-gray-900">
-            Tag: <span className="capitalize">{actualTag}</span>
+            Tag: <span className="capitalize">{actualTag.replace(/-/g, " ")}</span>
           </h1>
         </div>
       </div>

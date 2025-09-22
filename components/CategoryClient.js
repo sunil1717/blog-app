@@ -51,10 +51,10 @@ export default function CategoryClient({ categorySlug }) {
             <Link href="/" className="hover:underline">
               Home
             </Link>{" "}
-            › <span className="font-medium capitalize">{actualCategory}</span>
+            › <span className="font-medium capitalize">{actualCategory.replace(/-/g, " ")}</span>
           </div>
           <h1 className="text-3xl font-bold text-gray-900">
-            Category: <span className="capitalize">{actualCategory}</span>
+            Category: <span className="capitalize">{actualCategory.replace(/-/g, " ")}</span>
           </h1>
         </div>
       </div>

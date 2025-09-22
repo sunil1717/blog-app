@@ -49,10 +49,10 @@ export default function SearchClient({ queryParam }) {
         <div className="max-w-[1320px] mx-auto px-6 md:px-12 lg:px-20">
           <div className="text-sm text-gray-600 mb-2">
             <Link href="/" className="hover:underline">Home</Link> ›{" "}
-            <span className="font-medium capitalize">{actualQuery}</span>
+            <span className="font-medium capitalize">{actualQuery.replace(/-/g, " ")}</span>
           </div>
           <h1 className="text-3xl font-bold text-gray-900">
-            Searched: <span className="capitalize">{actualQuery}</span>
+            Searched: <span className="capitalize">{actualQuery.replace(/-/g, " ")}</span>
           </h1>
         </div>
       </div>
