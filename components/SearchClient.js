@@ -112,7 +112,7 @@ export default function SearchClient({ queryParam }) {
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     const query = slugify(e.target.value);
-                    if (query) router.push(`/search?query=${query}`);
+                    if (query) router.push(`/search?query=${encodeURIComponent(query)}`);
                   }
                 }}
                 className="w-full border rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-500"
