@@ -14,7 +14,7 @@ export default function SearchClient({ queryParam }) {
   const [loading, setLoading] = useState(true);
   const [queryBlogs, setQueryBlogs] = useState([]);
 
-  const slugify = (str) => str?.trim().replace(/\s+/g, "-").replace(/[^\w\s-]/g, "") ;
+  const slugify = (str) => str?.trim().replace(/\s+/g, "-");
   const deslugify = (str) => str.replace(/-/g, " ").replace(/\s+/g, " ").trim();
 
   const actualQuery = queryParam

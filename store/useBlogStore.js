@@ -79,7 +79,7 @@ export const useBlogStore = create((set, get) => ({
     try {
 
       const res = await axios.get(
-        `${API_URL}?category=${currentBlog.category}`
+        `${API_URL}?category=${currentBlog.category?.slug}`
       );
       // Exclude current blog
       console.log(currentBlog);

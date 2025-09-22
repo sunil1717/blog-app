@@ -9,7 +9,7 @@ export default function Navbar() {
 
 
   const slugify = (str) =>
-    str?.trim().replace(/\s+/g, "-").replace(/[^\w\s-]/g, "") ;
+    str?.trim().replace(/\s+/g, "-");
 
   const handleSearch = (e) => {
     e.preventDefault();
