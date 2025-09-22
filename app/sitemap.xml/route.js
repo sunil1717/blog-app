@@ -23,7 +23,7 @@ export async function GET() {
   );
 
   // Unique categories
-  const categories = [...new Set(blogs.map((b) => b.category))];
+  const categories = [...new Set(blogs.map((b) => b.category?.slug))];
   const categoryUrls = categories.map(
     (c) => `<url>
       <loc>${baseUrl}/category/${c.trim().replace(/\s+/g, "-")}</loc>
@@ -31,7 +31,7 @@ export async function GET() {
   );
 
   // Unique tags
-  const tags = [...new Set(blogs.flatMap((b) => b.tags || []))];
+  const tags = [...new Set(blogs.flatMap((b) => (b.tags || []).map((t) => t.slug)))];
   const tagUrls = tags.map(
     (t) => `<url>
       <loc>${baseUrl}/tag/${t.trim().replace(/\s+/g, "-")}</loc>
