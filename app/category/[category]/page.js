@@ -4,7 +4,8 @@ import { connectToDB } from "@/lib/mongodb";
 
 export async function generateMetadata({ params }) {
   await connectToDB();
-  const blogs = await Blog.find({ category: params.category.replace(/-/g, " ") }).lean();
+  const blogs = await Blog.find({ "category.slug": params.category }).lean();
+
 
   if (!blogs || blogs.length === 0) {
     return {

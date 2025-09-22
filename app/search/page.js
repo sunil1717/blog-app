@@ -17,11 +17,16 @@ export async function generateMetadata({ searchParams }) {
 
     const regex = new RegExp(query, "i");
     const blogs = await Blog.find({
-      $or: [{ title: regex }, { category: regex }, { tags: regex }],
+      $or: [
+        { title: regex },
+        { "category.name": regex },
+        { "tags.name": regex },
+      ],
     }).lean();
 
+
     return {
-      title: blogs.length > 0 ? `Search: ${query} | MyBlog` : `No results for ${query} | MyBlog`,
+      title: blogs.length > 0 ? `Search: ${query}` : `No results for ${query} | MyBlog`,
       description:
         blogs.length > 0
           ? `Read blogs matching your search query "${query}".`

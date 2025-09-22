@@ -26,7 +26,7 @@ export default function FeaturedSection({ blogs }) {
               
               {/* content */}
               <div className="absolute left-8 bottom-8 text-white max-w-[620px]">
-                <div className="text-sm opacity-90">{main.category}</div>
+                <div className="text-sm opacity-90">{main.category?.name}</div>
                 <h2 className="mt-3 text-[34px] md:text-[44px] lg:text-[52px] font-extrabold leading-tight relative inline-block after:block after:h-[2px] after:bg-red-500 after:scale-x-0 after:origin-left after:transition-transform after:duration-300 group-hover:after:scale-x-100">
                   {main.title}
                 </h2>
@@ -45,7 +45,7 @@ export default function FeaturedSection({ blogs }) {
                     className="w-full h-[200px] object-cover rounded-[10px] transition-transform duration-500 ease-in-out group-hover:scale-105"
                   />
                   <div className="pt-4">
-                    <div className="text-sm text-[#e65a64]">{b.category}</div>
+                    <div className="text-sm text-[#e65a64]">{b.category?.name}</div>
                     <h3 className="mt-2 text-[18px] font-semibold leading-snug relative inline-block after:block after:h-[2px] after:bg-[#e65a64] after:scale-x-0 after:origin-left after:transition-transform after:duration-300 group-hover:after:scale-x-100">
                       {b.title}
                     </h3>

@@ -15,9 +15,9 @@ export default function CategoryClient({ categorySlug }) {
 
   const slugify = (str) => str?.trim().replace(/\s+/g, "-");
   const deslugify = (str) =>
-    str.replace(/-/g, " ").replace(/\s+/g, " ").trim();
+    str.trim().replace(/-/g, " ");
 
-  const actualCategory = deslugify(categorySlug);
+  const actualCategory = categorySlug;
 
   useEffect(() => {
     if (!categorySlug) return;
@@ -82,7 +82,7 @@ export default function CategoryClient({ categorySlug }) {
                   <div className="p-6 flex flex-col justify-between w-full md:w-2/3">
                     <div>
                       <span className="text-red-500 text-xs font-medium uppercase tracking-wider">
-                        {b.category}
+                        {b.category?.name}
                       </span>
                       <h2 className="text-2xl font-semibold mt-2 leading-snug">
                         <span className="bg-gradient-to-r from-red-500 to-red-500 bg-[length:0%_2px] bg-left-bottom bg-no-repeat transition-all duration-500 group-hover:bg-[length:100%_2px]">

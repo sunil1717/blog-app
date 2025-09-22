@@ -14,10 +14,10 @@ export default function SearchClient({ queryParam }) {
   const [loading, setLoading] = useState(true);
   const [queryBlogs, setQueryBlogs] = useState([]);
 
-  const slugify = (str) => str?.trim().replace(/\s+/g, "-");
+  const slugify = (str) => str?.trim().replace(/\s+/g, "-").replace(/[^\w\s-]/g, "") ;
   const deslugify = (str) => str.replace(/-/g, " ").replace(/\s+/g, " ").trim();
 
-  const actualQuery = deslugify(queryParam);
+  const actualQuery = queryParam
 
   useEffect(() => {
     if (!queryParam) return;
@@ -80,7 +80,7 @@ export default function SearchClient({ queryParam }) {
                   <div className="p-6 flex flex-col justify-between w-full md:w-2/3">
                     <div>
                       <span className="text-red-500 text-xs font-medium uppercase tracking-wider">
-                        {b.category}
+                        {b.category?.name}
                       </span>
                       <h2 className="text-2xl font-semibold mt-2 leading-snug">
                         <span className="bg-gradient-to-r from-red-500 to-red-500 bg-[length:0%_2px] bg-left-bottom bg-no-repeat transition-all duration-500 group-hover:bg-[length:100%_2px]">

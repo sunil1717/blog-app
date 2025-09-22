@@ -50,7 +50,7 @@ export async function GET(request) {
       return new Response(JSON.stringify(blog), { status: 200 });
     }
     // 3. Filter by recent blogs 
-      if (recent === "true") {
+    if (recent === "true") {
       const query = {};
       if (exclude) query.slug = { $ne: exclude }; // exclude current blog
 
@@ -60,8 +60,8 @@ export async function GET(request) {
 
     // 3. Filter by category or tag
     const query = {};
-    if (category) query.category = category;
-    if (tag) query.tags = tag;
+    if (category) query["category.slug"] = category;
+    if (tag) query["tags.slug"] = tag;
 
     const blogs = await Blog.find(query).sort({ createdAt: -1 });
     return new Response(JSON.stringify(blogs), { status: 200 });
@@ -97,8 +97,11 @@ export async function POST(req) {
           return resolve(new Response("Missing required fields", { status: 400 }));
         }
 
-        // Convert tags string to array
-        const tagsArray = tags ? tags.split(",").map((t) => t.trim()) : [];
+        // Convert tags string to array of objects { name }
+        const tagsArray = tags
+          ? tags.split(",").map((t) => ({ name: t.trim() }))
+          : [];
+
 
         // Upload images to Cloudinary (max 3)
         const uploadedImages = [];
@@ -112,13 +115,18 @@ export async function POST(req) {
           }
         }
 
+
+        const categoryObj = category
+          ? { name: category.trim() }
+          : { name: "General" };
+
         const newBlog = new Blog({
           title,
           metaTitle,
           content,
           metaContent,
           tags: tagsArray,
-          category,
+          category: categoryObj,
           images: uploadedImages,
         });
 
@@ -132,63 +140,7 @@ export async function POST(req) {
   });
 }
 
-// -------------------- PUT --------------------
-export async function PUT(req) {
-  await connectToDB();
-  const nodeReq = await toNodeRequest(req);
 
-  return new Promise((resolve) => {
-    const form = new IncomingForm({ keepExtensions: true, multiples: true });
-
-    form.parse(nodeReq, async (err, fields, files) => {
-      if (err) return resolve(new Response("Form parse error", { status: 400 }));
-
-      try {
-        const slug = normalize(fields.slug);
-        const title = normalize(fields.title);
-        const metaTitle = normalize(fields.metaTitle);
-        const content = normalize(fields.content);
-        const metaContent = normalize(fields.metaContent);
-        const tags = normalize(fields.tags);
-        const category = normalize(fields.category);
-        const publishedDate = normalize(fields.publishedDate);
-
-        if (!slug) return resolve(new Response("Slug is required", { status: 400 }));
-
-        const blog = await Blog.findOne({ slug });
-        if (!blog) return resolve(new Response("Blog not found", { status: 404 }));
-
-        // Upload new images if provided
-        const uploadedImages = [];
-        if (files.images) {
-          const fileArray = Array.isArray(files.images) ? files.images : [files.images];
-          for (let file of fileArray.slice(0, 3)) {
-            const res = await cloudinary.uploader.upload(file.filepath, {
-              folder: "blog_images",
-            });
-            uploadedImages.push(res.secure_url);
-          }
-        }
-
-        // Update fields
-        blog.title = title || blog.title;
-        blog.metaTitle = metaTitle || blog.metaTitle;
-        blog.content = content || blog.content;
-        blog.metaContent = metaContent || blog.metaContent;
-        blog.tags = tags ? tags.split(",").map((t) => t.trim()) : blog.tags;
-        blog.category = category || blog.category;
-        blog.publishedDate = publishedDate || blog.publishedDate;
-        if (uploadedImages.length > 0) blog.images = uploadedImages;
-
-        await blog.save();
-        return resolve(new Response(JSON.stringify(blog), { status: 200 }));
-      } catch (error) {
-        console.error("Blog update error:", error);
-        return resolve(new Response(error.message, { status: 500 }));
-      }
-    });
-  });
-}
 
 // -------------------- DELETE --------------------
 export async function DELETE(request) {

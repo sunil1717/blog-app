@@ -284,7 +284,7 @@ export default function AdminPage() {
               >
                 <div>
                   <h3 className="text-lg font-bold">{blog.title}</h3>
-                  <p className="text-sm text-gray-600">{blog.category}</p>
+                  <p className="text-sm text-gray-600">{blog.category.name}</p>
                 </div>
                 <button
                   onClick={() => deleteBlog(blog._id)}

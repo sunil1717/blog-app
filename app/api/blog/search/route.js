@@ -21,8 +21,8 @@ export async function GET(req) {
         const blogs = await Blog.find({
             $or: [
                 { title: regex },
-                { category: regex },
-                { tags: regex },
+                { "category.name": regex },
+                { "tags.name": regex },
             ],
         });
 

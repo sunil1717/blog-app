@@ -90,13 +90,13 @@ export default function TopStories({ sectionId }) {
                         {randomCategories.map((cat, idx) => (
                             <button
                                 key={idx}
-                                onClick={() => setSelectedCategory(cat)}
-                                className={`px-4 py-2 border rounded-lg text-sm transition ${selectedCategory === cat
+                                onClick={() => setSelectedCategory(cat.slug)}
+                                className={`px-4 py-2 border rounded-lg text-sm transition ${selectedCategory === cat.slug
                                     ? "bg-black text-white"
                                     : "hover:bg-black hover:text-white"
                                     }`}
                             >
-                                {cat}
+                                {cat.name}
                             </button>
                         ))}
                     </div>
@@ -123,9 +123,9 @@ export default function TopStories({ sectionId }) {
 
                                 <div>
                                     {story.category && (
-                                        <Link href={`/category/${slugify(story.category)}`} className="flip-badge text-xs px-2 py-1 rounded-md cursor-pointer text-red-500 inline-block hover:text-red-600 transition">
+                                        <Link href={`/category/${story.category.slug}`} className="flip-badge text-xs px-2 py-1 rounded-md cursor-pointer text-red-500 inline-block hover:text-red-600 transition">
 
-                                            <span className="flip-bottom block">{story.category}</span>
+                                            <span className="flip-bottom block">{story.category.name}</span>
                                         </Link>
                                     )}
 
@@ -156,9 +156,9 @@ export default function TopStories({ sectionId }) {
                                 </Link>
                                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
                                     {story.category && (
-                                        <Link href={`/category/${slugify(story.category)}`} className="flip-badge text-xs px-2 py-1 rounded-md cursor-pointer text-red-600 inline-block hover:text-red-600 transition">
+                                        <Link href={`/category/${story.category.slug}`} className="flip-badge text-xs px-2 py-1 rounded-md cursor-pointer text-red-600 inline-block hover:text-red-600 transition">
 
-                                            <span className="flip-bottom block">{story.category}</span>
+                                            <span className="flip-bottom block">{story.category.name}</span>
                                         </Link>
                                     )}
                                     <Link href={`/${story.slug}`} key={story?._id} className="cursor-pointer">

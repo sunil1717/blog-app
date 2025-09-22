@@ -52,8 +52,8 @@ export default function BlogClient({ slug }) {
             {/* Breadcrumb */}
             <div className="text-sm text-gray-500">
               <Link href="/">Home</Link> &bull;{" "}
-              <Link href={`/category/${slugify(singleblog.category)}`}>
-                {singleblog.category}
+              <Link href={`/category/${singleblog.category?.slug}`}>
+                {singleblog.category?.name}
               </Link>{" "}
               &bull; <span>{singleblog.title}</span>
             </div>
@@ -157,7 +157,7 @@ export default function BlogClient({ slug }) {
                     className="w-full h-full object-cover transform transition-transform duration-500 group-hover:scale-110"
                   />
                 </div>
-                <p className="mt-3 text-xs text-gray-500">{post.category}</p>
+                <p className="mt-3 text-xs text-gray-500">{post.category?.name}</p>
                 <h4 className="font-semibold text-sm">{post.title}</h4>
               </Link>
             ))}

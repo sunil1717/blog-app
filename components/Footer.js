@@ -52,10 +52,10 @@ export default function Footer() {
                 footerCategories.map((cat, idx) => (
                   <Link
                     key={idx}
-                    href={`/category/${slugify(cat)}`}
+                    href={`/category/${cat.slug}`}
                     className="hover:text-white transition text-sm"
                   >
-                    {cat}
+                    {cat.name}
                   </Link>
                 ))
               ) : (
